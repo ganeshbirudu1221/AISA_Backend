@@ -1,0 +1,6 @@
+flask
+os
+tensorflow
+PIL 
+numpy
+opencv-python
