@@ -31,7 +31,8 @@ def upload():
     if file and allowed_file(file.filename):
         filename = file.filename
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        model = tf.keras.models.load_model('application/model/AISA_CNN.h5')
+        model = tf.keras.models.load_model('application/model/AISA_CNN.h5',compile=False)
+        model.compile() #Paste it here
 
         path='application/uploads/'+filename
         original=tf.keras.preprocessing.image.load_img(path, target_size=(224,224))
