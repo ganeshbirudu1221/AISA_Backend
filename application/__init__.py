@@ -24,6 +24,7 @@ def home():
 @app.route('/upload',methods=['POST'])
 def upload():
     if 'file' not in request.files:
+        print("hello")
         return "No File is Selected"    
     file = request.files['file']
     if file.filename == '':
@@ -45,6 +46,7 @@ def upload():
         img = np.expand_dims(img, axis=0)
         img = img/255.0
         prediction = model.predict(img)
+        print(path)
         os.remove(path)
         response= (categories[np.argmax(prediction)])
         return jsonify({"response":response})
