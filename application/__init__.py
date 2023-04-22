@@ -1,6 +1,6 @@
 from flask import Flask,request,jsonify
 import os
-import tensorflow as tf
+import keras
 from application.categories import categories
 from PIL import Image as im
 from application.grabcutSegmentation import GrabcutSegmentation
@@ -32,17 +32,17 @@ def upload():
     if file and allowed_file(file.filename):
         filename = file.filename
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        model = tf.keras.models.load_model('application/model/AISA_CNN.h5',compile=False)
+        model = keras.models.load_model('application/model/AISA_CNN.h5',compile=False)
         model.compile() #Paste it here
 
         path='application/uploads/'+filename
-        original=tf.keras.preprocessing.image.load_img(path, target_size=(224,224))
+        original=keras.preprocessing.image.load_img(path, target_size=(224,224))
         image_path=GrabcutSegmentation.grabcut_segmentation(path)
 
         image_path = im.fromarray(image_path)
         image_path.save(path)
-        new_img = tf.keras.preprocessing.image.load_img(path, target_size=(224,224))
-        img = tf.keras.preprocessing.image.img_to_array(new_img)
+        new_img = keras.preprocessing.image.load_img(path, target_size=(224,224))
+        img = keras.preprocessing.image.img_to_array(new_img)
         img = np.expand_dims(img, axis=0)
         img = img/255.0
         prediction = model.predict(img)
